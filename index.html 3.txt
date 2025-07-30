@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🌱 Grow a Garden Shop</title>
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID_HERE&currency=USD"></script>
+  <style>
+    :root {
+      --main-bg: #000000;
+      --accent-bg: #1a1a1a;
+      --border-color: #444;
+      --text-color: #f0f0f0;
+      --heading-color: #58f158;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--main-bg);
+      color: var(--text-color);
+      padding: 20px;
+      margin: 0;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: var(--heading-color);
+    }
+
+    .shop-section {
+      background-color: var(--accent-bg);
+      border: 2px dashed var(--border-color);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px auto;
+      max-width: 700px;
+    }
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      border-bottom: 1px solid #333;
+    }
+
+    .item:last-child {
+      border-bottom: none;
+    }
+
+    .item span {
+      font-size: 1.2em;
+    }
+
+    .paypal-button-container {
+      margin-top: 10px;
+    }
+
+    .username-input {
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #555;
+      background: #222;
+      color: #fff;
+      width: 100%;
+    }
+
+    .footer {
+      text-align: center;
+      margin: 40px 10px 10px;
+      font-size: 1em;
+      color: #888;
+    }
+
+    .contact-button {
+      display: block;
+      margin: 30px auto 10px;
+      padding: 12px 20px;
+      background-color: #000000;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      text-align: center;
+      width: fit-content;
+      transition: background-color 0.3s;
+    }
+
+    .contact-button:hover {
+      background-color: #4752c4;
+    }
+
+    @media (max-width: 600px) {
+      .item span {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌱 Grow a Garden Shop</h1>
+  <p style="text-align:center;">Best Pets & Sheckels for Sale!<br><strong>All Prices Negotiable!</strong></p>
+
+  <div class="shop-section">
+    <h2>🐾 Pet Prices</h2>
+
+    <div class="item">
+      <span>🪩 Disco Bee — $8.50</span>
+      <input class="username-input" placeholder="Enter your Roblox username" id="user-disco-bee">
+      <div class="paypal-button-container" id="paypal-disco-bee"></div>
+    </div>
+
+    <div class="item">
+      <span>🦕 Spinosaurus — $7.50</span>
+      <input class="username-input" placeholder="Enter your Roblox username" id="user-spino">
+      <div class="paypal-button-container" id="paypal-spino"></div>
+    </div>
+
+    <div class="item">
+      <span>🦝 Raccoon — $10.00</span>
+      <input class="username-input" placeholder="Enter your Roblox username" id="user-raccoon">
+      <div class="paypal-button-container" id="paypal-raccoon"></div>
+    </div>
+
+    <div class="item">
+      <span>🦅 Bald Eagle — $1.00</span>
+      <input class="username-input" placeholder="Enter your Roblox username" id="user-eagle">
+      <div class="paypal-button-container" id="paypal-eagle"></div>
+    </div>
+
+    <div class="item">
+      <span>🎨 Custom Pet Orders — Ask Me</span>
+    </div>
+  </div>
+
+  <div class="shop-section">
+    <h2>💰 Sheckel Shop</h2>
+
+    <div class="item">
+      <span>1T — $1.25</span>
+      <input class="username-input" placeholder="Enter your Roblox username" id="user-1t">
+      <div class="paypal-button-container" id="paypal-1t"></div>
+    </div>
+
+    <div class="item">
+      <span>750T — $2.30</span>
+      <input class="username-input" placeholder="Enter your Roblox username" id="user-750t">
+      <div class="paypal-button-container" id="paypal-750t"></div>
+    </div>
+
+    <div class="item">
+      <span>1QD — $3.50</span>
+      <input class="username-input" placeholder="Enter your Roblox username" id="user-1qd">
+      <div class="paypal-button-container" id="paypal-1qd"></div>
+    </div>
+  </div>
+
+  <a class="contact-button" href="https://discord.com/users/1226028987067662350" target="_blank">
+    💬 Contact Me on Discord
+  </a>
+
+  <div class="footer">
+    🌼 Thanks for visiting the Grow a Garden Shop! 🌼
+  </div>
+
+  <script>
+    function renderPayPal(id, amount, item, userInputId) {
+      paypal.Buttons({
+        style: {
+          color: 'silver',
+          shape: 'pill',
+          label: 'buynow'
+        },
+        createOrder: function(data, actions) {
+          const username = document.getElementById(userInputId).value || 'No username provided';
+          return actions.order.create({
+            purchase_units: [{
+              description: `${item} for Roblox user: ${username}`,
+              amount: {
+                value: amount
+              }
+            }]
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            alert('✅ Order placed by ' + details.payer.name.given_name + '!');
+          });
+        }
+      }).render('#' + id);
+    }
+
+    // Render buttons for each product
+    renderPayPal("paypal-disco-bee", "8.50", "Disco Bee", "user-disco-bee");
+    renderPayPal("paypal-spino", "7.50", "Spinosaurus", "user-spino");
+    renderPayPal("paypal-raccoon", "10.00", "Raccoon", "user-raccoon");
+    renderPayPal("paypal-eagle", "1.00", "Bald Eagle", "user-eagle");
+
+    renderPayPal("paypal-1t", "1.25", "1T Sheckels", "user-1t");
+    renderPayPal("paypal-750t", "2.30", "750T Sheckels", "user-750t");
+    renderPayPal("paypal-1qd", "3.50", "1QD Sheckels", "user-1qd");
+  </script>
+
+</body>
+</html>
